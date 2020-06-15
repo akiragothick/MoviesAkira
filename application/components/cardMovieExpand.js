@@ -60,7 +60,36 @@ export default class cardMovieExpand extends Component {
         return this.getImagePoster(path, poster_sizes)
     }
 
+    getVideos = id => {
+        //https://api.themoviedb.org/3/movie/496243/videos?api_key=6646bc85bad38ac564647a298fbb176c&language=en-US
+        // {
+        //     "id": 496243,
+        //     "results": [
+        //         {
+        //             "id": "5d5446ef55c92600162572e3",
+        //             "iso_639_1": "en",
+        //             "iso_3166_1": "US",
+        //             "key": "isOGD_7hNIY",
+        //             "name": "Parasite [Official Trailer] – In Theaters October 11, 2019",
+        //             "site": "YouTube",
+        //             "size": 1080,
+        //             "type": "Trailer"
+        //         },
+        //         {
+        //             "id": "5dfdc9799824c80017df2566",
+        //             "iso_639_1": "en",
+        //             "iso_3166_1": "US",
+        //             "key": "PhPROyE0OaM",
+        //             "name": "Parasite [Trailer 2] – Now Playing in New York & Los Angeles.",
+        //             "site": "YouTube",
+        //             "size": 1080,
+        //             "type": "Trailer"
+        //         }
+        //     ]
+        // }
 
+        //https://www.youtube.com/watch?v= 
+    }
 
     render() {
 
