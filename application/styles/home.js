@@ -22,12 +22,14 @@ export const homeStyle = StyleSheet.create({
 
 export const contentCardStyle = StyleSheet.create({
     root: {
-        paddingVertical: 5
+        paddingVertical: 5,
+        height: '100%'
     },
     container: {
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        height: '100%'
     }
 })

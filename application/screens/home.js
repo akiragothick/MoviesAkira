@@ -54,6 +54,14 @@ export default class Home extends Component {
 
     }
 
+    getImagePoster = path => {
+
+        const base_url = 'https://image.tmdb.org/t/p/'
+        const poster_sizes = 'w300'
+
+        return `${base_url}${poster_sizes}${path}`
+    }
+
     render() {
         if (!this.state.fontLoaded)
             return <AppLoading />
@@ -69,7 +77,11 @@ export default class Home extends Component {
                     showsVerticalScrollIndicator={false} >
                     <View style={contentCardStyle.container}>
                         {renderCards.map((item, index) => {
-                            return <CardMovie title={item.title} key={index} />
+                            return <CardMovie
+                                title={item.title}
+                                image={this.getImagePoster(item.poster_path)}
+                                style={styles.card}
+                                key={index} />
                         })}
                     </View>
                 </ScrollView>
@@ -80,6 +92,9 @@ export default class Home extends Component {
 
 const styles = StyleSheet.create({
     title: {
+        fontFamily: fonts.Family
+    },
+    card: {
         fontFamily: fonts.Family
     }
 })
