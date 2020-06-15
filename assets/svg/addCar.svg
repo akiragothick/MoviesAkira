@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="63" height="63" viewBox="0 0 63 63">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="63" height="63" fill="none"/>
+    </clipPath>
+    <filter id="Trazado_5362" x="0" y="0" width="63" height="63" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="agregar" clip-path="url(#clip-path)">
+    <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Trazado_5362)">
+      <path id="Trazado_5362-2" data-name="Trazado 5362" d="M22.5,0A22.5,22.5,0,1,1,0,22.5,22.5,22.5,0,0,1,22.5,0Z" transform="translate(9 6)" fill="#4ce4b1"/>
+    </g>
+    <g id="Grupo_3305" data-name="Grupo 3305" transform="translate(623.249 -829.962) rotate(45)">
+      <path id="Unión_6" data-name="Unión 6" d="M16.493,17.827,9,10.334,1.663,17.672A.943.943,0,0,1,.329,16.338L7.666,9,.173,1.507A.855.855,0,0,1,.329.329.855.855,0,0,1,1.507.173L9,7.666,16.336.33A.943.943,0,0,1,17.67,1.664L10.334,9l7.493,7.493a.855.855,0,0,1-.157,1.177A1.063,1.063,0,0,1,16.94,18,.619.619,0,0,1,16.493,17.827Z" transform="translate(179.729 1016.901)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

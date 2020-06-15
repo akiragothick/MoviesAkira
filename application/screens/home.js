@@ -54,13 +54,18 @@ export default class Home extends Component {
 
     }
 
-    getImagePoster = path => {
-
+    getImagePoster = (path, size) => {
         const base_url = 'https://image.tmdb.org/t/p/'
-        const poster_sizes = 'w300'
 
-        return `${base_url}${poster_sizes}${path}`
+        return `${base_url}${size}${path}`
     }
+
+    getImageCard = path => {
+        const poster_sizes = 'w300'
+        return this.getImagePoster(path, poster_sizes)
+    }
+
+
 
     render() {
         if (!this.state.fontLoaded)
@@ -78,10 +83,11 @@ export default class Home extends Component {
                     <View style={contentCardStyle.container}>
                         {renderCards.map((item, index) => {
                             return <CardMovie
+                                id={item.id}
                                 title={item.title}
-                                image={this.getImagePoster(item.poster_path)}
+                                image={this.getImageCard(item.poster_path)}
                                 style={styles.card}
-                                key={index} />
+                                key={item.id} />
                         })}
                     </View>
                 </ScrollView>
