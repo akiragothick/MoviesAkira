@@ -1,11 +1,20 @@
 import React from 'react'
 import { StyleSheet, TextInput } from 'react-native'
 
+const fn = text => {
+    console.log(text)
+}
+
 export default function Search(props) {
+
+    const onChange = props.onChange || fn;
+
     return (
         <TextInput
             style={{ ...style.input, ...props.style }}
-            placeholder="Buscar..." />
+            placeholder="Buscar..."
+            onChangeText={text => onChange(text)}
+        />
     )
 }
 

@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text, TouchableHighlight, Image, ScrollView } from 'react-native'
+import { AppLoading } from "expo";
+import * as Font from "expo-font";
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import moment from "moment";
+import { WebView } from 'react-native-webview';
 
 import Back from "../../assets/svg/back.svg";
 import TitleHeader from '../components/titleHeader'
@@ -11,18 +18,27 @@ export default class cardMovieExpand extends Component {
         super(props);
 
         this.state = {
+            fontLoaded: false,
             movie: {
                 runtime: 0,
                 genres: [],
                 production_companies: [],
                 spoken_languages: []
-            }
+            },
+            videos: []
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        await Font.loadAsync({
+            Aller: require("../../assets/fonts/Aller_Rg.ttf"),
+            "Aller-Light": require("../../assets/fonts/Aller_Lt.ttf"),
+        });
+        this.setState({ fontLoaded: true });
+
         const { id } = this.props
         this.getMovie(id)
+        this.getVideos(id)
     }
 
     getMovie = id => {
@@ -61,43 +77,47 @@ export default class cardMovieExpand extends Component {
     }
 
     getVideos = id => {
-        //https://api.themoviedb.org/3/movie/496243/videos?api_key=6646bc85bad38ac564647a298fbb176c&language=en-US
-        // {
-        //     "id": 496243,
-        //     "results": [
-        //         {
-        //             "id": "5d5446ef55c92600162572e3",
-        //             "iso_639_1": "en",
-        //             "iso_3166_1": "US",
-        //             "key": "isOGD_7hNIY",
-        //             "name": "Parasite [Official Trailer] – In Theaters October 11, 2019",
-        //             "site": "YouTube",
-        //             "size": 1080,
-        //             "type": "Trailer"
-        //         },
-        //         {
-        //             "id": "5dfdc9799824c80017df2566",
-        //             "iso_639_1": "en",
-        //             "iso_3166_1": "US",
-        //             "key": "PhPROyE0OaM",
-        //             "name": "Parasite [Trailer 2] – Now Playing in New York & Los Angeles.",
-        //             "site": "YouTube",
-        //             "size": 1080,
-        //             "type": "Trailer"
-        //         }
-        //     ]
-        // }
 
-        //https://www.youtube.com/watch?v= 
+        const api = 'https://api.themoviedb.org/3'
+        const key = '6646bc85bad38ac564647a298fbb176c'
+        const language = 'es-MX'
+
+        const urlVideos = `${api}/movie/${id}/videos?api_key=${key}&language=${language}`
+
+        fetch(urlVideos, {
+            method: 'GET'
+        })
+            .then(resp => resp.json())
+            .then(jsonResult => {
+                this.setState({
+                    videos: jsonResult.results
+                })
+            })
+
+        // {
+        //     "id": "5d5446ef55c92600162572e3",
+        //     "iso_639_1": "en",
+        //     "iso_3166_1": "US",
+        //     "key": "isOGD_7hNIY",
+        //     "name": "Parasite [Official Trailer] – In Theaters October 11, 2019",
+        //     "site": "YouTube",
+        //     "size": 1080,
+        //     "type": "Trailer"
+        // },
+
     }
 
     render() {
 
-        const { movie } = this.state;
+        if (!this.state.fontLoaded)
+            return <AppLoading />
+
+
+        const { movie, videos } = this.state;
 
         const generos = movie.genres.reduce((acc, item) => {
             return [...acc, item.name]
-        }, []).join(', ')
+        }, []).splice(0,4).join(', ')
 
         const idiomas = movie.spoken_languages.reduce((acc, item) => {
             return [...acc, item.name]
@@ -145,6 +165,33 @@ export default class cardMovieExpand extends Component {
                                     <Text style={styles.characteristicValue}>{moment(movie.release_date).format("DD/MM/YYYY")}</Text>
                                 </View>
                             </View>
+
+                            {
+                                videos.length > 0 && (
+                                    <>
+                                        <TitleHeader style={{ ...styles.title, ...styles.titleVideo }} title="Trailers" />
+                                        <View style={{ marginTop: 20, height: 200, width: '100%' }}>
+                                            <ScrollView
+                                                horizontal={true}
+                                                // pagingEnabled={true}
+                                                scrollEventThrottle={10}
+                                                // bounces={true}
+                                                showsHorizontalScrollIndicator={false}
+                                                // indicatorStyle={'white'}
+                                                >
+                                                {videos.map(item => {
+                                                    return <View style={{ height: '100%', width: wp("85%"), paddingHorizontal: 5 }} key={item.key}>
+                                                        <WebView source={{ uri: `https://www.youtube.com/embed/${item.key}` }}
+                                                            javaScriptEnabled={true}
+                                                            style={{ width: '100%', height: '100%' }} />
+                                                    </View>
+                                                })}
+                                            </ScrollView>
+                                        </View>
+                                    </>
+                                )
+                            }
+
                         </View>
                     </ScrollView>
                 </View>
@@ -181,12 +228,11 @@ const styles = StyleSheet.create({
         position: 'absolute',
         height: '100%',
         width: '100%',
-        paddingTop: 400
+        paddingTop: '155%'
     },
     content: {
         backgroundColor: '#fff',
-        height: '100%',
-        minHeight: 1000,
+        minHeight: 2000,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         paddingTop: 40,
@@ -200,9 +246,9 @@ const styles = StyleSheet.create({
         width: '106%',
         height: 35,
         display: 'flex',
-        flexDirection : 'row'
+        flexDirection: 'row'
     },
-    gendersText : {
+    gendersText: {
         fontSize: 16,
         textAlign: 'left',
         paddingTop: 10,
@@ -223,7 +269,8 @@ const styles = StyleSheet.create({
         paddingLeft: 6,
         marginTop: 15,
         fontSize: 18,
-        color: '#a4a4a4'
+        color: '#a4a4a4',
+        fontFamily: "Aller-Light"
     },
     characteristics: {
         marginTop: 30,
@@ -242,5 +289,8 @@ const styles = StyleSheet.create({
         width: '65%',
         fontSize: 20,
         color: '#a4a4a4'
+    },
+    titleVideo: {
+        marginTop: 20
     }
 })

@@ -1,13 +1,28 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image, Text, Modal, TouchableHighlight } from 'react-native'
+import { AppLoading } from "expo";
+import * as Font from "expo-font";
 
 import CardMovieExpand from './cardMovieExpand'
 
 export default class cardMovie extends Component {
 
-    state = {
-        modalVisible: false
-    };
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            fontLoaded: false,
+            modalVisible: false
+        }
+    }
+
+    async componentDidMount() {
+        await Font.loadAsync({
+            Aller: require("../../assets/fonts/Aller_Rg.ttf"),
+            "Aller-Light": require("../../assets/fonts/Aller_Lt.ttf"),
+        });
+        this.setState({ fontLoaded: true });
+    }
 
     setModalVisible = (visible) => {
         this.setState({ modalVisible: visible });
@@ -15,30 +30,29 @@ export default class cardMovie extends Component {
 
     render() {
 
+        if (!this.state.fontLoaded)
+            return <AppLoading />
+
         const { modalVisible } = this.state;
 
         const {
             id,
             title,
-            image,
-            style
+            image
         } = this.props
 
         return (
             <>
-                <TouchableHighlight style={styles.card}
-                    onPress={() => {
-                        this.setModalVisible(true);
-                    }}>
+                <TouchableHighlight style={styles.card} onPress={() => { this.setModalVisible(true); }}>
                     <View>
                         <Image style={styles.image} source={{ uri: image }} />
                         <View style={styles.contentText}>
-                            <Text style={{ ...style, ...styles.title }}>{title}</Text>
+                            <Text style={{ ...styles.title }}>{title}</Text>
                         </View>
                     </View>
                 </TouchableHighlight>
                 <Modal visible={modalVisible} animationType="slide">
-                    <CardMovieExpand id={id} style={{ ...style }} closeModal={() => { this.setModalVisible(false); }} />
+                    <CardMovieExpand id={id} closeModal={() => { this.setModalVisible(false); }} />
                 </Modal>
             </>
         )
@@ -62,6 +76,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5
     },
     title: {
-        fontSize: 16
+        fontSize: 16,
+        fontFamily: "Aller-Light"
     }
 })
