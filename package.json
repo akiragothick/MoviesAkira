@@ -13,7 +13,7 @@
     "expo": "~37.0.3",
     "expo-av": "~8.1.0",
     "expo-font": "~8.1.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "lottie-react-native": "~2.6.1",
     "moment": "^2.26.0",
     "react": "~16.9.0",
